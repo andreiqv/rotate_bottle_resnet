@@ -168,8 +168,8 @@ with graph.as_default():
 	# 2. Add nodes that represent the optimization algorithm.
 
 	loss = tf.reduce_mean(tf.square(output - y))
-	#train_op = tf.train.AdagradOptimizer(0.01).minimize(loss)
-	train_op = tf.train.GradientDescentOptimizer(0.01).minimize(loss)
+	train_op = tf.train.AdagradOptimizer(0.01).minimize(loss)
+	#train_op = tf.train.GradientDescentOptimizer(0.01).minimize(loss)
 
 	# 3. Execute the graph on batches of input data.
 	with tf.Session() as sess:  # Connect to the TF runtime.
