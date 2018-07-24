@@ -123,7 +123,7 @@ graph = tf.Graph() # no necessiry
 with graph.as_default():
 
 	# 1. Construct a graph representing the model.
-	height, width =  299, 299
+	height, width =  224, 224
 	x = tf.placeholder(tf.float32, [None, height, width, 3]) # Placeholder for input.
 	y = tf.placeholder(tf.float32, [None])   # Placeholder for labels.
 	
@@ -134,8 +134,9 @@ with graph.as_default():
 	#m = hub.Module(module_spec)
 	#bottleneck_tensor = m(resized_input_tensor)
 
-	module = hub.Module("https://tfhub.dev/google/imagenet/inception_v3/feature_vector/1")
-	height, width = hub.get_expected_image_size(module)
+	#module = hub.Module("https://tfhub.dev/google/imagenet/inception_v3/feature_vector/1")
+	module = hub.Module("https://tfhub.dev/google/imagenet/resnet_v2_50/classification/1")	
+	assert height, width == hub.get_expected_image_size(module)
 	bottleneck_tensor = module(resized_input_tensor)  # Features with shape [batch_size, num_features]
 
 	bottleneck_tensor_size = 2048

@@ -13,7 +13,7 @@ np.set_printoptions(precision=4, suppress=True)
 #import tensorflow_hub as hub
 
 
-def load_data(in_dir, img_size=(299,299)):	
+def load_data(in_dir, img_size):	
 	""" each image has form [height, width, 3]
 	"""
 
@@ -102,7 +102,7 @@ def split_data(data, ratio=(6,1,3)):
 if __name__ == '__main__':
 
 	in_dir = 'data'
-	data1 = load_data(in_dir, img_size=(299,299))
+	data1 = load_data(in_dir, img_size=(224, 224))
 
 	print(len(data1['images']))
 	print(len(data1['labels']))
