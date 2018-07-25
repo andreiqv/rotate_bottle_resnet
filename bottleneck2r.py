@@ -135,7 +135,8 @@ with graph.as_default():
 	#bottleneck_tensor = m(resized_input_tensor)
 
 	#module = hub.Module("https://tfhub.dev/google/imagenet/inception_v3/feature_vector/1")
-	module = hub.Module("https://tfhub.dev/google/imagenet/resnet_v2_50/classification/1")	
+	#module = hub.Module("https://tfhub.dev/google/imagenet/resnet_v2_50/classification/1")	
+	module = hub.Module("https://tfhub.dev/google/imagenet/resnet_v2_152/classification/1")	
 	assert height, width == hub.get_expected_image_size(module)
 	bottleneck_tensor = module(resized_input_tensor)  # Features with shape [batch_size, num_features]
 
@@ -162,7 +163,7 @@ with graph.as_default():
 	loss = tf.reduce_mean(tf.square(output - y))
 	#optimizer = tf.train.AdagradOptimizer(0.01)
 	#optimizer= tf.train.AdagradOptimizer(0.01)
-	optimizer= tf.train.AdamOptimizer(0.002)
+	optimizer= tf.train.AdamOptimizer(0.005)
 	#train_op = tf.train.GradientDescentOptimizer(0.01)
 	train_op = optimizer.minimize(loss)
 
