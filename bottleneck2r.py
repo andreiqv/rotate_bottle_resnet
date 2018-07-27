@@ -148,19 +148,24 @@ with graph.as_default():
 
 	f1 = fullyConnectedLayer(
 		bottleneck_input, input_size=bottleneck_tensor_size, num_neurons=512, 
-		func=None, name='F1')
+		func=tf.nn.relu, name='F1')
 	
 	drop1 = tf.layers.dropout(inputs=f1, rate=0.4)	
 	
 	f2 = fullyConnectedLayer(drop1, input_size=512, num_neurons=1, 
-		func=None, name='F2')
+		func=tf.sigmoid, name='F2')
 
 	output = f2
 	print('output =', output)
 
 	# 2. Add nodes that represent the optimization algorithm.
 
-	loss = tf.reduce_mean(tf.square(output - y))
+	#loss = tf.reduce_mean(tf.square(output - y))
+	
+	#loss = tf.reduce_sum(tf.pow(output - y, 2))/(n_instances)
+	#loss = tf.reduce_mean(tf.squared_difference(output, y))
+	loss = tf.nn.l2_loss(output - y)
+
 	#optimizer = tf.train.AdagradOptimizer(0.01)
 	#optimizer= tf.train.AdagradOptimizer(0.01)
 	optimizer= tf.train.AdamOptimizer(0.005)
