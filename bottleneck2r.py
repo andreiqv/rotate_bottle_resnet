@@ -125,7 +125,7 @@ with graph.as_default():
 	# 1. Construct a graph representing the model.
 	height, width =  224, 224
 	x = tf.placeholder(tf.float32, [None, height, width, 3]) # Placeholder for input.
-	y = tf.placeholder(tf.float32, [None])   # Placeholder for labels.
+	y = tf.placeholder(tf.float32, [None, 1])   # Placeholder for labels.
 	
 	resized_input_tensor = tf.reshape(x, [-1, height, width, 3]) #[batch_size, height, width, 3].
 
@@ -168,7 +168,7 @@ with graph.as_default():
 
 	#optimizer = tf.train.AdagradOptimizer(0.01)
 	#optimizer= tf.train.AdagradOptimizer(0.01)
-	optimizer= tf.train.AdamOptimizer(0.005)
+	optimizer= tf.train.AdamOptimizer(0.01)
 	#train_op = tf.train.GradientDescentOptimizer(0.01)
 	train_op = optimizer.minimize(loss)
 
@@ -184,8 +184,8 @@ with graph.as_default():
 				#print('train: {0:.2f} - {1:.2f}'.format(output_values[0][0]*360, train['labels'][0]*360))
 				#print('train: {0:.2f} - {1:.2f}'.format(output_values[1][0]*360, train['labels'][1]*360))
 				output_values = output.eval(feed_dict = {x:valid['images'][:3]})
-				print('valid: {0:.2f} - {1:.2f}'.format(output_values[0][0]*360, valid['labels'][0]*360))
-				print('valid: {0:.2f} - {1:.2f}'.format(output_values[1][0]*360, valid['labels'][1]*360))
+				print('valid: {0:.2f} - {1:.2f}'.format(output_values[0][0]*360, valid['labels'][0][0]*360))
+				print('valid: {0:.2f} - {1:.2f}'.format(output_values[1][0]*360, valid['labels'][1][0]*360))
 				#print('valid: {0:.2f} - {1:.2f}'.format(output_values[2][0]*360, valid['labels'][2]*360))
 
 				output_angles_valid = []
@@ -249,8 +249,11 @@ with graph.as_default():
 		print('Test of model')
 		print('Test_accuracy={0:0.4f}'.format(test_accuracy))
 		"""
+
+		"""
 		test_accuracy = loss.eval(feed_dict={x:test['images'][0:BATCH_SIZE]})
 		print('Test_accuracy={0:0.4f}'.format(test_accuracy))				
+		"""
 
 		# Rotate images:
 		in_dir = 'data'
