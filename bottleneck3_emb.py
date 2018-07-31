@@ -159,8 +159,8 @@ with graph.as_default():
 
 	# 1. Construct a graph representing the model.
 	height, width =  224, 224
-	x = tf.placeholder(tf.float32, [None, height, width, 3]) # Placeholder for input.
-	y = tf.placeholder(tf.float32, [None, 1])   # Placeholder for labels.
+	x = tf.placeholder(tf.float32, [None, height, width, 3], name='Placeholder-x') # Placeholder for input.
+	y = tf.placeholder(tf.float32, [None, 1], name='Placeholder-y')   # Placeholder for labels.
 	
 	resized_input_tensor = tf.reshape(x, [-1, height, width, 3]) #[batch_size, height, width, 3].
 
@@ -281,15 +281,17 @@ with graph.as_default():
 
 			if len(x_data) <= 0: continue
 			sess.run(train_op, 
-				{bottleneck_input: train_bottlenecks_batch, y: y_data})  # Perform one training iteration.		
+				feed_dict={bottleneck_input: train_bottlenecks_batch, y: y_data})  # Perform one training iteration.		
 			#print(a1, a2, y_data)			
 
 		# Save the comp. graph
 
+		"""
 		x_data, y_data =  valid['images'], valid['labels'] #mnist.train.next_batch(BATCH_SIZE)		
 		writer = tf.summary.FileWriter("output", sess.graph)
-		print(sess.run(train_op, {x: x_data, y: y_data}))
+		print(sess.run(train_op, feed_dict={x: x_data, y: y_data}))
 		writer.close()  
+		"""
 
 		# Test of model
 		"""
