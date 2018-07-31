@@ -128,9 +128,9 @@ def calc_bottleneck_values(sess, data):
 		bottleneck_values = sess.run(bottleneck_tensor, 
 			{resized_input_tensor: d})
 		bottleneck_values = np.squeeze(bottleneck_values)
-		bottlenecks.apeend(bottleneck_values)
+		bottlenecks.append(bottleneck_values)
 
-	return bottlenecks
+	return np.array(bottlenecks)
 
 
 def module1(x, shape):
@@ -217,8 +217,9 @@ with graph.as_default():
 
 
 		# calculate output of bottleneck
+		print('calculate output of bottleneck:')
 		train_bottlenecks = calc_bottleneck_values(sess, train['images'])
-
+		print('train_bottlenecks shape:', train_bottlenecks.shape)
 
 		for iteration in range(NUM_ITERS):			  # Train iteratively for NUM_iterationS.		 
 
