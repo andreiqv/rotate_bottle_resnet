@@ -126,7 +126,7 @@ def calc_bottleneck_values(sess, data):
 
 	for d in data:
 		bottleneck_values = sess.run(bottleneck_tensor, 
-			{resized_input_tensor: d})
+			{resized_input_tensor: [d]})
 		bottleneck_values = np.squeeze(bottleneck_values)
 		bottlenecks.append(bottleneck_values)
 
@@ -138,15 +138,15 @@ def module1(x, shape):
 	fullconn_input_size = shape[0] * shape[1] * shape[2]
 	p_flat = tf.reshape(x, [-1, fullconn_input_size])
 	f1 = fullyConnectedLayer(p_flat, input_size=fullconn_input_size, num_neurons=1024, 
-		func=tf.nn.relu, name='F1')
+		func=tf.nn.relu, name='M_F1')
 	
 	drop1 = tf.layers.dropout(inputs=f1, rate=0.4)	
 	f2 = fullyConnectedLayer(drop1, input_size=1024, num_neurons=1024, 
-		func=tf.nn.relu, name='F2')
+		func=tf.nn.relu, name='M_F2')
 	
 	drop2 = tf.layers.dropout(inputs=f2, rate=0.4)	
 	f3 = fullyConnectedLayer(drop2, input_size=1024, num_neurons=1001, 
-		func=tf.sigmoid, name='F3')
+		func=tf.sigmoid, name='M_F3')
 
 	return f3
 
@@ -177,12 +177,15 @@ with graph.as_default():
 	bottleneck_tensor = module(resized_input_tensor)  # Features with shape [batch_size, num_features]
 	"""
 	bottleneck_tensor = module1(resized_input_tensor, shape=(height, width, 3))  # Features with shape [batch_size, num_features]
+	print('bottleneck_tensor:', bottleneck_tensor)
 
 	bottleneck_tensor_size = 1001
 	bottleneck_input = tf.placeholder_with_default(  # A placeholder op that passes through input when its output is not fed.
 		bottleneck_tensor,
 		shape=[None, bottleneck_tensor_size],
 		name='BottleneckInputPlaceholder')
+
+	print('bottleneck_input:', bottleneck_input)
 
 	f1 = fullyConnectedLayer(
 		bottleneck_input, input_size=bottleneck_tensor_size, num_neurons=512, 
